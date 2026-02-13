@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz | My Portfolio</title>
+  <link rel="stylesheet" href="quiz-style.css">
+</head>
+
+<body class="quiz">
+
+  <div class="overlay">
+    <h1 class="gold-title">Get to Know Me in 30 Seconds</h1>
+    <p class="intro">
+      Answer the questions to discover more about my goals and personality.
+    </p>
+
+    <div class="quiz-box">
+      <h2 id="question" class="gold-text">Question will appear here</h2>
+
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer(0)" id="btn0"></button>
+        <button class="option-btn" onclick="checkAnswer(1)" id="btn1"></button>
+        <button class="option-btn" onclick="checkAnswer(2)" id="btn2"></button>
+        <button class="option-btn" onclick="checkAnswer(3)" id="btn3"></button>
+      </div>
+
+      <p id="result"></p>
+
+      <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <a href="home.html" class="back-home">← Back to Home</a>
+
+  </div>
+
+  <script src="quiz.js"></script>
+</body>
+</html>

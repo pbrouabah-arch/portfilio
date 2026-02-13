@@ -1,0 +1,150 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.journey {
+  height: 100vh;
+  background-image: url("images/turkey.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
+.journey-overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.journey-container {
+  max-width: 900px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 50px;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+  text-align: center;
+}
+
+.title {
+  font-size: 42px;
+  color: #FFD700;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+}
+
+.subtitle {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  margin: 0 auto;
+  padding-left: 25px;
+  text-align: left;
+}
+
+/* الخط العمودي */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(255, 215, 0, 0.6);
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+}
+
+/* كل عنصر */
+.timeline-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 35px;
+  position: relative;
+}
+
+.circle {
+  width: 18px;
+  height: 18px;
+  background: #FFD700;
+  border-radius: 50%;
+  margin-top: 8px;
+  box-shadow: 0 0 10px #FFD700, 0 0 18px #FFD700;
+  flex-shrink: 0;
+}
+
+.content {
+  background: rgba(0, 0, 0, 0.35);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  width: 100%;
+}
+
+.content h2 {
+  color: #FFD700;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 22px;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.8);
+}
+
+.content p {
+  color: white;
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* Buttons */
+.buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  background: #FFD700;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.3s;
+  box-shadow: 0 0 12px #FFD700, 0 0 20px #FFD700;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  background: #FFC700;
+}
+
+.btn2 {
+  background: transparent;
+  border: 2px solid #FFD700;
+  color: #FFD700;
+  box-shadow: none;
+}
+
+.btn2:hover {
+  background: #FFD700;
+  color: black;
+}

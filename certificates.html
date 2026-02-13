@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Certificates & Activities | My Portfolio</title>
+  <link rel="stylesheet" href="certificates-style.css">
+</head>
+
+<body class="certificates">
+
+  <div class="container">
+
+    <h1 class="title">Certificates & Activities</h1>
+    <p class="subtitle">
+      Showcasing my activities, learning experiences, skills, and certificates.
+    </p>
+
+    <!-- Activities Section -->
+    <section class="section">
+      <h2>Activities & Volunteer Work</h2>
+
+      <div class="card">
+        <h3>Scout Member </h3>
+        <p>Participated in local scouting activities.</p>
+      </p>I have been an active member of the Scouts, where I learned leadership, teamwork, and community service.
+Through various activities and  experiences.
+Being part of the Scouts taught me the value of helping others and working together towards common goals.</p>
+      </div>
+
+      <div class="card">
+        <h3>sourire a l'innocence </h3>
+        <p>Accepted member; actively contributing to support initiatives for children.  
+           <span class="note">(Letter of Acceptance available)</span>
+        </p>
+        <button class="evidence-btn">View Evidence</button>
+        <div class="evidence-images" style="display:none;">
+          <img src="images/sourire a l'innocence.jpg" alt="Club Acceptance Letter">
+          
+        </div>
+      </div>
+
+      <div class="card">
+        <h3> Workshops </h3>
+        <p>I participated in a workshop.</p>
+        <button class="evidence-btn">View Evidence</button>
+        <div class="evidence-images" style="display:none;">
+          <img src="images/gdg.jpg" alt="gdg">
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section">
+      <h2>Skills</h2>
+
+      <!-- Programming Languages -->
+      <div class="skill">
+        <span>C,PASCAL, HTML/CSS</span>
+      </div>
+
+      <!-- Tools -->
+      <div class="skill">
+        <span>VS Code, LUNIX</span>
+      </div>
+
+      <!-- Soft Skills / Other Skills -->
+      <div class="skill">
+        <span>Problem Solving</span>
+       <span> I learned problem-solving skills through Easy Learn by working on real challenges.
+It taught me to think clearly, analyze problems, and find smart solutions.
+This experience made me more confident and creative in solving problems.</span>
+      </div>
+
+      <div class="skill">
+        <span>Teamwork</span>
+      <span>  Through Easy Learn and the clubs, I improved my teamwork skills by collaborating on group projects and activities.
+I taught how to communicate effectively, listen to others, and contribute to shared goals.</span>
+      </div>
+
+      <div class="skill">
+        <span>Creativity & Drawing</span>
+        <button class="evidence-btn">View Evidence</button>
+        <div class="evidence-images" style="display:none;">
+          <img src="images/drawing2.jpg" alt="Drawing 2">
+          <img src="images/drawing3.jpg" alt="Drawing 3">
+           <img src="images/drawing4.jpg" alt="Drawing 4">
+            <img src="images/drawing5.jpg" alt="Drawing 5">
+            <img src="images/drawing6.jpg" alt="Drawing 6">
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section class="section">
+      <h2>Certificates</h2>
+
+      <div class="card">
+        <h3>Older different certificates.</h3>
+        <p>My certificates that I obtained some time ago.</p>
+         <p>  1/ certificate fome my techer of computer sience.</p>
+         <p>  2/3/ certificate fome my techer of computer sience too.</p>
+         <p>  4/Quran Memorization Certificate from Primary School </p>
+         <p>  5/6/Certificate of Participation in the Arab Reading Challenge, and my Interest in Reading </p>
+         
+          
+        <button class="evidence-btn">View Certificate</button>
+        <div class="evidence-images" style="display:none;">
+          <img src="images/chahada1.jpg" alt="chahada1">
+          <img src="images/chahada5.jpg" alt="chahada5">
+           <img src="images/chahada6.jpg" alt="chahada6">
+            <img src="images/chahada7.jpg" alt="chahada7">
+         <img src="images/chahada9.jpg" alt="chahada9">
+          <img src="images/chahada10.jpg" alt="chahada10">
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Recent certificates.</h3>
+        <p>My certificate that I obtained recently.</p>
+        <p>1/ First Aid Certification from the Red Crescent.</p>
+         <p>2/Certificate of attendance in bootcamp.</p>
+        <button class="evidence-btn">View Certificate</button>
+        <div class="evidence-images" style="display:none;">
+           <img src="images/chahada8.png" alt="chahada8">
+          <img src="images/Certificate - ROUBAH BASMALA.jpg" alt="Certificate - ROUBAH BASMALA">
+         
+        </div>
+      </div>
+ <div class="card">
+        <h3>some certificates fome middle schoole.</h3>
+         <button class="evidence-btn">View Certificate</button>
+        <div class="evidence-images" style="display:none;">
+         <img src="images/chahada4.jpg" alt="chahada4">
+          <img src="images/chahada3.jpg" alt="chahada3">
+           <img src="images/chahada2.jpg" alt="chahada2">
+        </div>
+      </div>
+    </section>
+
+    <!-- Back to Home -->
+    <a href="home.html" class="back-btn">⬅ Back to Home</a>
+
+  </div>
+
+  <!-- Modal for Evidence -->
+  <div id="evidence-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3>Evidence</h3>
+      <div id="image-preview"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Modal -->
+  <script>
+    const modal = document.getElementById("evidence-modal");
+    const closeBtn = document.querySelector(".close-btn");
+    const imagePreview = document.getElementById("image-preview");
+    const buttons = document.querySelectorAll(".evidence-btn");
+
+    // Open modal and show permanent images
+    buttons.forEach(btn => {
+      btn.addEventListener("click", (event) => {
+        const skillDiv = event.target.parentElement;
+        const images = skillDiv.querySelectorAll(".evidence-images img");
+
+        imagePreview.innerHTML = ""; // clear previous images
+        images.forEach(img => {
+          const cloned = img.cloneNode();
+          imagePreview.appendChild(cloned);
+        });
+
+        modal.style.display = "block";
+      });
+    });
+
+    // Close Modal
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    }
+
+    // Close when clicking outside modal
+    window.onclick = (event) => {
+      if(event.target === modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+</html>

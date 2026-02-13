@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>حاول ان تطابق الصور في الوقت المحدد\n ولك في النهاية مفاجاة ستعجبك</title>
+<style>
+/* ===================== الصفحة الخارجية ===================== */
+#landing {
+  position: fixed;
+  inset: 0;
+  background: url('images/landing.jpg') center/cover no-repeat; /* غيّري الصورة إذا أحببت */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#landing h1 {
+  color: white; /* الكتابة بيضاء */
+  font-size: 48px;
+  text-shadow: 0 0 20px gold, 0 0 40px rgb(255, 217, 0), 0 0 60px gold; /* شعاع ذهبي مشع */
+  text-align: center;
+  margin-bottom: 30px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+#landing button {
+  padding: 15px 45px;
+  font-size: 20px;
+  border: none;
+  border-radius: 15px;
+  background: gold; /* زر ذهبي */
+  color: white; /* الكتابة بالداخل بيضاء */
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 15px gold, 0 0 30px gold inset; /* تأثير شعاع خفيف للزر */
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+#landing button:hover {
+  transform: scale(1.1); /* تكبير بسيط عند المرور */
+  box-shadow: 0 0 25px gold, 0 0 50px gold inset;
+}
+
+/* تأثير ظهور الصفحة */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===================== اللعبة ===================== */
+body {
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle, #2b0040, #000);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin:0;
+  padding:0;
+}
+
+h1 {
+  margin-top: 20px;
+  color: gold;
+  text-shadow: 0 0 15px gold;
+}
+
+#timer {
+  font-size: 26px;
+  margin: 10px;
+}
+
+#gameGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 25px;
+  width: 90%;
+}
+
+.card {
+  width: 100%;
+  height: 180px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 10px #9400D3; /* اشعاع بنفسجي افتراضي */
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  background: url('images/question_mark.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.correct .card-inner {
+  box-shadow: 0 0 30px gold;
+}
+
+.wrong .card-inner {
+  box-shadow: 0 0 30px red !important;
+}
+
+/* ===================== نافذة المعلومات ===================== */
+#infoBox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+#infoContent {
+  background: #1a002b;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 0 30px gold;
+}
+
+#infoContent h2 {
+  color: gold;
+  text-shadow: 0 0 10px gold;
+}
+
+#infoText {
+  white-space: pre-line;
+  line-height: 1.8;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+#infoImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-top: 15px;
+}
+
+.closeBtn, #restartWinBtn {
+  margin-top: 20px;
+  padding: 10px 25px;
+  background: gold;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===================== نافذة الخسارة ===================== */
+#loseBox {
+  position: fixed;
+  inset:0;
+  background: rgba(0,0,0,0.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index: 100;
+}
+
+#loseContent {
+  background:#330033;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  max-width:500px;
+  color:white;
+}
+
+#loseContent button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  background: gold;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===================== رسالة الفوز ===================== */
+#winMessage {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: gold;
+  text-shadow: 0 0 15px gold;
+  z-index: 101;
+}
+</style>
+</head>
+
+<body>
+
+<!-- صفحة البداية -->
+<div id="landing">
+  <h1>🎴 لعبة مطابقة المعالم التركية</h1>
+  <button onclick="startFromLanding()">ابدأ اللعبة 🎮</button>
+</div>
+
+<!-- اللعبة -->
+<div id="timer" style="display:none;">الوقت: 01:30</div>
+<div class="grid" id="gameGrid" style="display:none;"></div>
+
+<!-- نافذة المعلومات عند الفوز -->
+<div id="infoBox">
+  <div id="infoContent">
+    <h2>✨ أحسنت! معلومات ثقافية ✨</h2>
+    <p id="infoText"></p>
+    <img id="infoImage" src="" alt="صورة المعلم">
+    <button id="restartWinBtn" onclick="startGame()">إعادة اللعبة</button>
+  </div>
+</div>
+
+<!-- نافذة الخسارة -->
+<div id="loseBox">
+  <div id="loseContent">
+    <h2>😔 انتهى الوقت!</h2>
+    <p>حاول مرة أخرى لتكتشف جميع المعالم التركية!</p>
+    <button onclick="restartFromLose()">إعادة اللعبة</button>
+  </div>
+</div>
+
+<!-- رسالة الفوز -->
+<div id="winMessage">🎉 مبروك! لقد فزت! 🎉</div>
+
+<script>
+const landmarks = [
+  {img: "images/hagia_sophia.jpg",
+   info: "• آيا صوفيا من أشهر معالم إسطنبول.\n• بنيت سنة 537 ميلادية.\n• تجمع بين الحضارتين البيزنطية والإسلامية.\n• مصنفة ضمن التراث العالمي لليونسكو."},
+  {img: "images/cappadocia.jpg",
+   info: "• كابادوكيا منطقة طبيعية فريدة.\n• تشتهر بالمداخن الجنية.\n• من أشهر أماكن المناطيد في العالم.\n• وجهة سياحية عالمية."},
+  {img: "images/bosphorus_bridge.jpg",
+   info: "• جسر شهداء 15 تموز في إسطنبول.\n• يربط آسيا بأوروبا.\n• رمز لوحدة الشعب التركي.\n• منظر رائع ليلاً."},
+  {img: "images/blue_mosque.jpg",
+   info: "• الجامع الأزرق من أجمل مساجد تركيا.\n• يتميز بست مآذن.\n• تحفة معمارية عثمانية.\n• مقصد سياحي وديني."},
+  {img: "images/tulip.jpg",
+   info: "• زهرة التوليب رمز ثقافي لتركيا.\n• تُزرع بكثرة في إسطنبول وأنقرة.\n• لها مهرجانات سنوية.\n• تعكس جمال الطبيعة التركية."},
+  {img: "images/grand_bazaar.jpg",
+   info: "• البازار الكبير في إسطنبول.\n• أحد أقدم الأسواق المغطاة في العالم.\n• يضم آلاف المحلات التجارية.\n• مكان ممتاز للتعرف على الثقافة التركية."},
+  {img: "images/bosphorus_strait.jpg",
+   info: "• مضيق البوسفور يفصل بين قارتي آسيا وأوروبا.\n• له أهمية استراتيجية وتاريخية.\n• يمر عبره العديد من السفن يوميًا.\n• يوفر مناظر طبيعية خلابة."},
+  {img: "images/kebab.jpg",
+   info: "• الكباب التركي من أشهر الأطباق.\n• له أنواع عديدة مثل شش كباب ودونر.\n• يعكس التراث الغذائي التركي.\n• يفضله السياح والمحليون على حد سواء."}
+];
+
+const grid = document.getElementById("gameGrid");
+const timerDisplay = document.getElementById("timer");
+const infoBox = document.getElementById("infoBox");
+const infoText = document.getElementById("infoText");
+const infoImage = document.getElementById("infoImage");
+const loseBox = document.getElementById("loseBox");
+const winMessage = document.getElementById("winMessage");
+
+let cards = [];
+let firstCard = null;
+let secondCard = null;
+let lock = false;
+let time = 90;
+let timer;
+
+// ================== صفحة البداية ==================
+function startFromLanding() {
+  document.getElementById("landing").style.display = "none";
+  grid.style.display = "grid";
+  timerDisplay.style.display = "block";
+  startGame();
+}
+
+// ================== بدء اللعبة ==================
+function startGame() {
+  grid.innerHTML = "";
+  infoBox.style.display = "none"; // اخفاء نافذة المعلومات عند إعادة اللعبة
+  cards = [...landmarks, ...landmarks].sort(() => Math.random() - 0.5);
+
+  cards.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-front">❓</div>
+        <div class="card-back"><img src="${item.img}"></div>
+      </div>
+    `;
+    card.dataset.info = item.info;
+    card.dataset.img = item.img;
+    card.onclick = () => flip(card);
+    grid.appendChild(card);
+  });
+
+  startTimer();
+}
+
+// ================== قلب البطاقة ==================
+function flip(card) {
+  if (lock || card === firstCard || card.classList.contains("correct")) return;
+
+  card.querySelector(".card-inner").style.boxShadow = "0 0 20px #9400D3"; // شعاع بنفسجي
+  card.classList.add("flipped");
+
+  if (!firstCard) {
+    firstCard = card;
+    return;
+  }
+
+  secondCard = card;
+  lock = true;
+
+  const firstImg = firstCard.querySelector('img').src;
+  const secondImg = secondCard.querySelector('img').src;
+
+  if (firstImg === secondImg) {
+    firstCard.classList.add("correct");
+    secondCard.classList.add("correct");
+    reset();
+    showWinMessage();
+  } else {
+    firstCard.classList.add("wrong");
+    secondCard.classList.add("wrong");
+    setTimeout(() => {
+      firstCard.classList.remove("flipped", "wrong");
+      secondCard.classList.remove("flipped", "wrong");
+      reset();
+    }, 1000);
+  }
+}
+
+// ================== إعادة تعيين ==================
+function reset() {
+  [firstCard, secondCard, lock] = [null, null, false];
+}
+
+// ================== المؤقت ==================
+function startTimer() {
+  clearInterval(timer);
+  time = 90;
+  timer = setInterval(() => {
+    time--;
+    const minutes = Math.floor(time/60).toString().padStart(2,'0');
+    const seconds = (time%60).toString().padStart(2,'0');
+    timerDisplay.textContent = `الوقت: ${minutes}:${seconds}`;
+    if (time <= 0) {
+      clearInterval(timer);
+      loseBox.style.display = "flex";
+    }
+  }, 1000);
+}
+
+// ================== نافذة الفوز ==================
+function showWinMessage() {
+  if (document.querySelectorAll(".card:not(.correct)").length === 0) {
+    clearInterval(timer);
+    winMessage.style.display = "flex";
+    setTimeout(() => {
+      winMessage.style.display = "none";
+      const randIndex = Math.floor(Math.random()*landmarks.length);
+      infoText.textContent = landmarks[randIndex].info;
+      infoImage.src = landmarks[randIndex].img;
+      infoBox.style.display = "flex";
+    }, 1000);
+  }
+}
+
+// ================== إعادة اللعبة عند الخسارة ==================
+function restartFromLose() {
+  loseBox.style.display = "none";
+  startGame();
+}
+</script>
+
+<a href="projects.html" style="
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 20px;
+  background:#FFD700;
+  color:black;
+  text-decoration:none;
+  border-radius:20px;
+  font-weight:bold;
+">
+  Back to Projects
+</a>
+</body>
+</html>

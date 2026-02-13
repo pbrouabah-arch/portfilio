@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.landing {
+  height: 100vh;
+  background-image: url("images/turkey.jpeg"); /* ضع مسار صورتك هنا */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  text-align: center;
+  padding: 40px;
+  border-radius: 15px;
+  max-width: 600px;
+  /* إضافة توهج للكتابة */
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700;
+}
+
+.overlay h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #FFD700; /* ذهبية */
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFD700;
+}
+
+.intro {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #FFD700; /* نص مشع */
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700;
+}
+
+.enter-btn {
+  text-decoration: none;
+  background-color: #FFD700; /* زر ذهبي */
+  color: white; /* كتابة الزر بيضاء */
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; /* توهج للزر */
+}
+
+.enter-btn:hover {
+  background-color: #FFC700; /* ذهبي أفتح عند المرور */
+  box-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700;
+}
+

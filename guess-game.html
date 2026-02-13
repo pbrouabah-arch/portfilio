@@ -1,0 +1,282 @@
+<!DOCTY<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لعبة تخمين الرقم التعليمية</title>
+<style>
+body {
+  font-family: 'Cairo', sans-serif;
+  text-align: center;
+  padding: 50px;
+  margin: 0;
+  min-height: 100vh;
+  background-image: url('images/numbers.jpg'); /* ضع صورتك هنا */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: -1;
+}
+
+h1 {
+  color: #FFD700;
+  font-size: 36px;
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+}
+
+input {
+  padding: 10px;
+  width: 60%;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #FFD700;
+  font-size: 18px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background: #FFD700;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #FFA500;
+  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+}
+
+#feedback {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFA500;
+}
+
+/* نافذة المكافأة */
+#rewardOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to right, #FFD700, #FFA500);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 100;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#rewardText {
+  text-align: center;
+  margin-bottom: 30px;
+  animation: glow 2s infinite alternate, scaleUp 1s ease-out;
+  text-shadow: 0 0 20px #FFD700, 0 0 40px #FFA500, 0 0 60px #FFD700;
+}
+
+#successMsg {
+  font-size: 56px; /* أكبر */
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+#hintText {
+  font-size: 28px;
+  color: #fff; /* التلميح أبيض */
+  text-align: right;
+  line-height: 1.8;
+}
+
+/* تأثير توهج النص */
+@keyframes glow {
+  0% { text-shadow: 0 0 20px #FFD700,0 0 40px #FFA500; }
+  50% { text-shadow: 0 0 40px #FFD700,0 0 60px #FFA500; }
+  100% { text-shadow: 0 0 20px #FFD700,0 0 40px #FFA500; }
+}
+
+/* تأثير تكبير النص */
+@keyframes scaleUp {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* زر إغلاق المكافأة */
+#closeRewardBtn {
+  padding: 12px 25px;
+  background: #FFD700;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}
+
+#closeRewardBtn:hover {
+  background: #FFA500;
+  box-shadow: 0 0 20px #FFD700, 0 0 40px #FFA500;
+}
+
+/* فقاعات ذهبية */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.7);
+  width: 15px; height: 15px;
+  animation: float 3s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<h1>لعبة تخمين الرقم التعليمية</h1>
+<p>حاول تخمين الرقم بين 1 و 10! لديك 3 محاولات فقط.</p>
+
+<input type="number" id="guessInput" placeholder="أدخل رقمك هنا" min="1" max="10">
+<br>
+<button onclick="checkGuess()">تخمين</button>
+<p id="feedback"></p>
+<button onclick="restartGame()">إعادة اللعبة</button>
+
+<!-- نافذة المكافأة -->
+<div id="rewardOverlay">
+  <div id="rewardText">
+    <div id="successMsg">🎉 تهانينا! لقد نجحت في التخمين! 🎉</div>
+    <div id="hintText"></div>
+  </div>
+  <button id="closeRewardBtn" onclick="hideReward()">العودة للعبة</button>
+</div>
+
+<script>
+let secretNumber = Math.floor(Math.random() * 10) + 1;
+let attempts = 0;
+const maxAttempts = 3;
+
+// معلومات موسعة لكل رقم (HTML لتقسيم الأسطر)
+const hints = [
+  `<strong>الرقم 1:</strong><br>- يمثل البداية والوحدة والاستقلالية.<br>- في الرياضيات، هو العدد المحايد للضرب.<br>- يرمز إلى القيادة والتميز.<br>- يظهر في بداية كل شيء مثل دورة الحياة أو اليوم.`,
+
+  `<strong>الرقم 2:</strong><br>- يرمز للتوازن والشراكة.<br>- يستخدم في الرياضيات لإظهار الزوجية والفردية.<br>- يمثل الخير والشر أو أي مفهوم ثنائي.<br>- كثير من الأشياء تأتي في أزواج.`,
+
+  `<strong>الرقم 3:</strong><br>- له رمزية قوية في القصص والأساطير، مثلث القوى الثلاث.<br>- أول رقم أولي فردي بعد 2.<br>- يمثل التوازن بين العقل والجسد والروح.<br>- كثير من الأمثال تقول: "الثلاثة خير من اثنين".`,
+
+  `<strong>الرقم 4:</strong><br>- مرتبط بالاستقرار والأرض.<br>- يمثل الأركان الأربعة للعالم.<br>- في الطبيعة، غالبًا الأشياء تأتي في أربعة: الفصول، الجهات الأساسية.<br>- في الرياضيات، أول رقم مركب بعد 1.`,
+
+  `<strong>الرقم 5:</strong><br>- يمثل الحواس الخمس وتجربة الإنسان.<br>- يرمز للتوازن بين الجسم والعقل.<br>- مضاعفاته تظهر في الأنماط الطبيعية.<br>- كان رمزًا للحماية والحظ في الثقافات القديمة.`,
+
+  `<strong>الرقم 6:</strong><br>- يمثل التوازن والتناغم.<br>- معروف بالرقم المثالي (1+2+3=6).<br>- يرمز للعائلة والاستقرار.<br>- كثير من المخلوقات لها بنية سداسية مثل خلايا النحل.`,
+
+  `<strong>الرقم 7:</strong><br>- رقم الحظ في كثير من الثقافات.<br>- له أهمية دينية (7 أيام الأسبوع، 7 سماوات).<br>- أول رقم أولي بعد 5.<br>- يظهر في الطبيعة والأدب: 7 عجائب العالم، 7 ألوان قوس قزح.`,
+
+  `<strong>الرقم 8:</strong><br>- يرمز للقوة والنجاح والوفرة.<br>- في الثقافة الصينية يمثل الثروة والحظ.<br>- أول رقم مثالي على شكل مضاعف مزدوج.<br>- إذا قلبناه، يصبح رمز اللانهاية ∞.`,
+
+  `<strong>الرقم 9:</strong><br>- رمز للكمال والخبرة.<br>- أكبر رقم أحادي في النظام العشري.<br>- يمثل الإلهام والحكمة.<br>- مضاعفاته تظهر أنماطًا رياضية رائعة (مثل 9× أي رقم).`,
+
+  `<strong>الرقم 10:</strong><br>- يرمز للانتهاء والبداية الجديدة.<br>- أساس النظام العشري للعد.<br>- يمثل الكمال والتكامل.<br>- كل عشرة أرقام تكمل دورة العد.`
+];
+
+function createBubbles() {
+  for(let i=0;i<30;i++){
+    const bubble = document.createElement('div');
+    bubble.className='bubble';
+    bubble.style.left=Math.random()*window.innerWidth+'px';
+    bubble.style.bottom='0px';
+    let size=10+Math.random()*20;
+    bubble.style.width=bubble.style.height=size+'px';
+    bubble.style.animationDuration=2+Math.random()*2+'s';
+    document.body.appendChild(bubble);
+    setTimeout(()=>bubble.remove(),4000);
+  }
+}
+
+function showReward(text){
+  const overlay = document.getElementById('rewardOverlay');
+  const hintText = document.getElementById('hintText');
+  hintText.innerHTML = text; // استخدمنا HTML لتقسيم الأسطر
+  overlay.style.display='flex';
+  createBubbles();
+}
+
+function hideReward(){
+  document.getElementById('rewardOverlay').style.display='none';
+}
+
+function checkGuess() {
+  const guess = Number(document.getElementById('guessInput').value);
+  const feedback = document.getElementById('feedback');
+  attempts++;
+  feedback.textContent='';
+
+  if(!guess || guess<1 || guess>10){
+    feedback.textContent="الرجاء إدخال رقم بين 1 و 10!";
+    return;
+  }
+
+  if(guess===secretNumber){
+    showReward(hints[secretNumber-1]);
+  } else if(guess<secretNumber){
+    feedback.textContent=`الرقم أكبر! (${attempts}/${maxAttempts} محاولات)`;
+  } else{
+    feedback.textContent=`الرقم أصغر! (${attempts}/${maxAttempts} محاولات)`;
+  }
+
+  if(attempts>=maxAttempts && guess!==secretNumber){
+    feedback.textContent=`😢 انتهت المحاولات! الرقم الصحيح هو ${secretNumber}.`;
+  }
+}
+
+function restartGame(){
+  secretNumber=Math.floor(Math.random()*10)+1;
+  attempts=0;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('guessInput').value='';
+  hideReward();
+  document.body.style.background="url('images/numbers.jpg')";
+  document.body.style.backgroundSize="cover";
+  document.body.style.backgroundPosition="center";
+  document.body.style.backgroundRepeat="no-repeat";
+}
+
+
+</script>
+<a href="projects.html" style="
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 20px;
+  background:#FFD700;
+  color:black;
+  text-decoration:none;
+  border-radius:20px;
+  font-weight:bold;
+">
+  Back to Projects
+</a>
+
+</body>
+</html>
